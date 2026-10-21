@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+# тяжёлые и производные данные проектов книг
+projects/*/audio/
+projects/*/chapters/
+projects/*/master/
+projects/*/cast/samples/
+projects/*/pronunciation/trials/
+# ключи никогда не коммитим
+*Cred*
+*.key
+.env
+
+.ffmpeg-bin/
+library/samples/

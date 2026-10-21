@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "vox": {
+      "command": "python",
+      "args": ["-X", "utf8", "mcp_server.py"],
+      "env": {"VOX_PROJECT": "projects/studio"}
+    }
+  }
+}

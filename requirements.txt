@@ -1,0 +1,6 @@
+numpy>=1.26
+# необязательно:
+# faster-whisper   # проверка аудио распознаванием (qc.asr = "faster-whisper")
+# vosk             # альтернатива (qc.asr = "vosk", qc.asr_model = путь к модели)
+# imageio-ffmpeg   # если ffmpeg не установлен в системе
+# pytest           # тесты
