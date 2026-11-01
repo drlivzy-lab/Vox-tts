@@ -14,3 +14,7 @@ projects/*/pronunciation/trials/
 
 .ffmpeg-bin/
 library/samples/
+
+# библиотека плеера (книги и аудио) и собранный сайт — не в git
+player/library/
+player/site/

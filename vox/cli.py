@@ -437,6 +437,25 @@ def cmd_say(args, project):
     cmd_clips(args, project)
 
 
+def cmd_publish(args, project):
+    from . import publish as pub
+    options = dict(cover=args.cover, images=args.image or [], cues=args.cue or [], description=args.description or "",
+                   narrator=args.narrator or "", link=args.link)
+    if args.m4b:
+        if not (args.chapters and args.title):
+            raise HarnessError("Для публикации файла нужны --chapters и --title")
+        result = pub.publish(Path(args.library), audio=Path(args.m4b), chapters=pub.load_chapters(Path(args.chapters)),
+                             book_id=args.id or pub.slug(args.title), title=args.title, author=args.author or "",
+                             version_label=args.version_label or "", status=args.status or "", **options)
+    else:
+        if project is None:
+            raise HarnessError("Укажите --book <проект> или --m4b <файл>")
+        result = pub.publish_project(project, Path(args.library), book_id=args.id, title=args.title,
+                                     author=args.author, version_label=args.version_label, **options)
+    _print(result)
+    print("Дальше: выложите папку библиотеки на сервер рядом с плеером (см. player/README.md)")
+
+
 def cmd_status(args, project):
     from .freeze import load_jobs
     from .ledger import Ledger
@@ -559,6 +578,17 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--id"); s.add_argument("--takes", type=int)
     s.add_argument("--formats"); s.add_argument("--preset"); s.add_argument("--subs", choices=["approx", "asr"])
     s.add_argument("--yes", action="store_true")
+    s = sub.add_parser("publish", help="выложить готовую книгу в библиотеку плеера (player/)")
+    s.add_argument("--library", required=True, help="папка библиотеки (library.json + books/)")
+    s.add_argument("--m4b", help="готовый файл книги вместо мастера проекта (.m4b/.m4a/.mp3)")
+    s.add_argument("--chapters", help="главы для --m4b: chapters.ffmeta или manifest.json")
+    s.add_argument("--id", help="латинский id книги (по умолчанию из названия)")
+    s.add_argument("--title"); s.add_argument("--author"); s.add_argument("--narrator")
+    s.add_argument("--description"); s.add_argument("--status"); s.add_argument("--cover", help="обложка jpg/png/webp")
+    s.add_argument("--image", action="append", help="иллюстрация: ключ=путь|Подпись")
+    s.add_argument("--cue", action="append", help="показ иллюстрации: ключ@глава, ключ@1..3, ключ@-1")
+    s.add_argument("--version-label", help="префикс версии, например master-v3")
+    s.add_argument("--link", action="store_true", help="жёсткая ссылка на аудио вместо копии (экономит место)")
     return p
 
 
@@ -578,10 +608,12 @@ def main(argv: list[str] | None = None) -> int:
         try:
             project = Project.open(args.book)
         except HarnessError:
-            if args.command not in ("voices", "costs"):
+            if args.command not in ("voices", "costs", "publish"):
                 raise
             project = None  # библиотека голосов и общая панель затрат работают и вне проекта
             if args.command == "costs" and not args.all or args.command == "voices" and args.action in ("import-cast", "use"):
+                raise
+            if args.command == "publish" and not args.m4b:
                 raise
         for extra in ([] if project is None else project.config.get("vendor_paths", [])):
             sys.path.insert(0, str((project.root / extra).resolve()))
