@@ -21,3 +21,14 @@ jobs:
         run: python -m pip install numpy pytest imageio-ffmpeg
       - name: Tests (offline, no API calls)
         run: python -X utf8 check.py
+
+  player:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Player tests
+        working-directory: player
+        run: npm test

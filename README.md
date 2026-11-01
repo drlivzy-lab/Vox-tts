@@ -86,6 +86,7 @@ python vox.py qc apply decisions-r002.json
 python vox.py assemble
 python vox.py qc splices --asr         # проверка склеек -> SPLICES.md
 python vox.py master
+python vox.py publish --library ../library --cover cover.jpg   # книга в библиотеку плеера (player/)
 python vox.py status
 python vox.py costs                    # costs.html: потрачено, осталось, по дням
 ```
@@ -105,8 +106,11 @@ python vox.py costs                    # costs.html: потрачено, ост�
                                           │
                        qc run (GigaAM / Gemini, без подсказки) ─ accept / reject
                                           │
-                       assemble ─ qc splices ─▶ главы ─ master ─▶ book.m4b
+                       assemble ─ qc splices ─▶ главы ─ master ─▶ book.m4b ─ publish ─▶ плеер
 ```
+
+Плеер для слушателей — [player/README.md](player/README.md): библиотека книг, тёмная контрастная тема,
+режим «Авто» для мультимедиа машины, громкость до 200 %, таймер сна, закладки, офлайн.
 
 ## Проект книги
 
@@ -186,7 +190,7 @@ Flex отвечает сразу, но может ждать свободной 
 
 ## Проверка кода харнесса
 
-`python -X utf8 check.py` — компиляция и 24 офлайн-теста; `check.py --install-hook` — перед каждым коммитом;
+`python -X utf8 check.py` — компиляция и офлайн-тесты харнесса (`cd player; npm test` — тесты плеера); `check.py --install-hook` — перед каждым коммитом;
 `.github/workflows/tests.yml` — то же в GitHub (Windows и Linux).
 
 ## Чего пока нет
