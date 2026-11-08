@@ -18,3 +18,7 @@ library/samples/
 # библиотека плеера (книги и аудио) и собранный сайт — не в git
 player/library/
 player/site/
+
+# выкладка плеера: настройки с секретным путём и журналы — только локально
+player/deploy.local.json
+player/.deploy/

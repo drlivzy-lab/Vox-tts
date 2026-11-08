@@ -1,0 +1,13 @@
+{
+  "ssh_host": "selectel",
+  "public_host": "behappy-ptg.ru",
+  "prefix": "/listen/<секрет-не-короче-24-символов>/",
+  "landing_dir": "/root/behappy-landing",
+  "container": "behappy-landing",
+  "container_root": "/usr/share/nginx/html",
+  "site": "../site",
+  "journal_dir": "player/.deploy",
+  "aliases": {
+    "audio/warbreaker.m4b": "books/warbreaker-ru/book.m4b"
+  }
+}
